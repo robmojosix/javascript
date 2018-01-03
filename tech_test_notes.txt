@@ -1,0 +1,167 @@
+Type of Null === "object"
+Null object pattern
+
+JS has function scoping
+A new function creates a closure and a new private namespace
+
+IIFE
+(Function(){})()
+
+'Use strict'
+Stricter parsing
+No auto globals creation
+No duplicate keys in objects
+Eval() is safer
+This no longer defaults to window
+
+NaN type is number
+Check a num is not NaN:
+Value !== Value // true
+Comparing NaN to itself is false
+
+All numbers are treated with floating point precision
+0.1 + 0.3 = 0.4000000004
+
+Write a function to determine a number:
+ES6
+Number.isInteger(val)
+
+function isInteger(x) { return Math.round(x) === x; }
+
+setTimeout()
+Even set to 0 puts the logic on the event queue and is worked off by the event loop
+
+Palindrome
+function isPalindrome(str) {
+    str = str.replace(/\W/g, '').toLowerCase();
+    return (str == str.split('').reverse().join(''));
+}
+
+Destructive array methods return references to the array that has been changed, not new arrays
+
+Stack overflow: too much logic in memory/stack
+Put setTimeout in loop to add logic to event queue instead of stack
+
+JS has a concurrency model based on an event loop
+
+Calling a function creates a frame containing logic and vars etc which is put on stack
+If that function calls another that foo is contained in another frame and added on top of stack, returning from a foo pops it off stack
+
+Heap: worked on logic or objects are allocated memory these are in the heap
+
+JavaScript runtime contains a message queue, which is a list of messages to be processed. A function is associated with each message. When the stack has enough capacity, a message is taken out of the queue and processed. The processing consists of calling the associated function (and thus creating an initial stack frame). The message processing ends when the stack becomes empty again.
+
+Add a message by triggering an event
+
+Having the event queue makes JS non blocking with IO commands
+User interactions can still be worked on when the browser waits for network request
+
+A closure is an inner function that has access to the variables in the outer (enclosing) function’s scope chain. The closure has access to variables in three scopes; specifically: (1) variable in its own scope, (2) variables in the enclosing function’s scope, and (3) global variables.
+const value1 = "1"
+(function(value2) {
+  const value3 = "3";
+
+  console.log(value1);
+  console.log(value2);
+  console.log(value3);
+
+}))(2);
+
+Closures can be used to prevent this problem by creating a unique scope for each iteration, storing each unique value of the variable within its scope, as follows:
+
+for (var i = 0; i < 5; i++) {
+	(function(x) {
+    	setTimeout(function() { console.log(x); }, x * 1000 );
+    })(i);
+}
+
+0 = falsey
+
+recursion:
+function Traverse(p_element,p_callback) {
+   p_callback(p_element);
+   var list = p_element.children;
+   for (var i = 0; i < list.length; i++) {
+       Traverse(list[i],p_callback);
+   }
+}
+
+True private method:
+Is memory inefficient (created new with every instance)
+var Employee = function (name, company, salary) {
+    this.name = name || "";       //Public attribute default value is null
+    this.company = company || ""; //Public attribute default value is null
+    this.salary = salary || 5000; //Public attribute default value is null
+
+    // Private method
+    var increaseSalary = function () {
+        this.salary = this.salary + 1000;
+    };
+
+    // Public method
+    this.dispalyIncreasedSalary = function() {
+        increaseSlary();
+        console.log(this.salary);
+    };
+};
+
+check if array:
+Object.prototype.toString.call(arrayObject);
+Array.isArray(arrayObject);
+
+The output would be 0. The delete operator is used to delete properties from an object. Here x is not an object but a local variable. delete operators don't affect local variables
+delete operator doesn't delete prototype property
+
+2 programming paradigms important for JavaScript:
+Prototypal inheritance & OOP
+Functional programming (also: closures, first class functions, lambdas).
+
+What is functional programming:
+Uses functions and avoids shared state & mutable data.
+leverages Pure functions; no side-effects
+first-class functions, higher order, lamdas
+
+Classical Inheritance: instances inherit from classes and create sub-class relationships
+Prototypal Inheritance: instances inherit directly from other objects. Instances are typically instantiated via factory functions or `Object.create()`.
+
+imperative-vs-declarative
+
+imperative step by step
+declarative: more legible, more OO
+
+OOP domains sit together and easy to understand and use
+but State is shared and sometimes needing a small part gives you trouble, cross-domain stuff
+
+Functional programming: no shared state, pure. functions tend to become more reusable
+but reduce readability, OOP is more popular, easier to understand,
+
+composition over inheritance.
+code reuse should be achieved by assembling smaller units of functionality into new objects instead of inheriting from classes and creating object taxonomies
+
+When to use prototypical inheritance.
+There is more than one type of prototypal inheritance:
+Delegation (i.e., the prototype chain).
+Concatenative (i.e. mixins, `Object.assign()`).
+Functional (Not to be confused with functional programming. A function used to create a closure for private state/encapsulation).
+
+Each type of prototypal inheritance has its own set of use-cases, but all of them are equally useful in their ability to enable composition, which creates has-a or uses-a or can-do relationships as opposed to the is-a relationship created with class inheritance.
+
+
+2 way data bindings
+has bindings on both UI and data model to update the model, angular
+1 way data flow binds to the data model and uses events to drive updates to the model which updates the UI, react
+3 way includes the server datastore
+
+
+Monoliths; all in on place, less network management or dependancy
+but hard to scale, hard to read
+
+micro services: scale easy to read
+more can go wrong, more thought with failover, circuit breaking
+
+
+
+JavaScript is always synchronous and single-threaded, run to completion. Except when blocked waiting on network, the event loop handles user interactions for example.
+Node is asynchronous as it is most used for network requests.
+
+understand react lifecycle and some redux.

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <ul class="list" ></ul>
+    <button class="add" type="button" name="button">Add</button>
+  </body>
+  <script type="text/javascript">
+  function Event(sender) {
+    this.sender = sender;
+    this.listeners = [];
+  }
+
+  Event.prototype = {
+    attach: function(listener) {
+      this.listeners.push(listener);
+    },
+    notify: function(args) {
+      var i;
+      for (i = 0; i < this.listeners.length; i += 1) {
+        debugger;
+        this.listeners[i](this.sender, args);
+      }
+    }
+  }
+
+  function Model(list) {
+    this.items = list;
+    this.itemAdded = new Event(this);
+  }
+
+  Model.prototype = {
+    getItems: function() {
+      return [].concat(this.items);
+    },
+    addItem: function(item) {
+      this.items.push(item);
+      this.itemAdded.notify({item: item});
+    }
+  }
+
+  function View(model, elements) {
+    this.model = model;
+    this.elements = elements;
+    this.addButtonClicked = new Event(this);
+
+    var that = this;
+
+    this.model.itemAdded.attach(function() {
+      that.rebuildList();
+    });
+
+    this.elements.addButton.addEventListener('click', function () {
+      that.addButtonClicked.notify();
+    });
+  }
+
+  View.prototype = {
+    show: function() {
+      this.rebuildList();
+    },
+    rebuildList: function() {
+      var list, items, key;
+      list = this.elements.list;
+      items = this.model.getItems();
+
+      list.innerHTML = "";
+
+      for (key in items) {
+          if (items.hasOwnProperty(key)) {
+              var elm = document.createElement('li');
+              elm.innerHTML = items[key]
+              list.appendChild(elm);
+          }
+      }
+    }
+  }
+
+  function Controller(model, view) {
+    this.model = model,
+    this.view = view;
+
+    var that = this;
+
+    this.view.addButtonClicked.attach(function () {
+      that.addItem();
+    });
+  }
+
+  Controller.prototype = {
+    addItem: function () {
+        var item = window.prompt('Add item:', '');
+        if (item) {
+            this.model.addItem(item);
+        }
+    }
+  }
+
+  function init() {
+    var model = new Model(['item 1', 'item 2']);
+    var view = new View(model, {
+      'list': document.querySelector('.list'),
+      'addButton': document.querySelector('.add')
+    });
+    var controller = new Controller(model, view);
+    view.show();
+  }
+
+  init();
+  </script>
+</html>

@@ -1,0 +1,77 @@
+function imgLoad(url) {
+    // Create new promise with the Promise() constructor;
+    // This has as its argument a function
+    // with two parameters, resolve and reject
+    return new Promise(function(resolve, reject) {
+      // Standard XHR to load an image
+      var request = new XMLHttpRequest();
+      request.open('GET', url);
+      request.responseType = 'blob';
+      // When the request loads, check whether it was successful
+      request.onload = function() {
+        if (request.status === 200) {
+        // If successful, resolve the promise by passing back the request response
+          resolve(request.response);
+        } else {
+        // If it fails, reject the promise with a error message
+          reject(Error('Image didn\'t load successfully; error code:' + request.statusText));
+        }
+      };
+      request.onerror = function() {
+      // Also deal with the case when the entire request fails to begin with
+      // This is probably a network error, so reject the promise with an appropriate message
+          reject(Error('There was a network error.'));
+      };
+      // Send the request
+      request.send();
+    });
+  }
+  // Get a reference to the body element, and create a new image object
+  var body = document.querySelector('body');
+  var myImage = new Image();
+  // Call the function with the URL we want to load, but then chain the
+  // promise then() method on to the end of it. This contains two callbacks
+  imgLoad('myLittleVader.jpg').then(function(response) {
+    // The first runs when the promise resolves, with the request.reponse
+    // specified within the resolve() method.
+    var imageURL = window.URL.createObjectURL(response);
+    myImage.src = imageURL;
+    body.appendChild(myImage);
+    // The second runs when the promise
+    // is rejected, and logs the Error specified with the reject() method.
+  }, function(Error) {
+    console.log(Error);
+  });
+
+  /////////////////////////////// .reslove method
+
+  var userCache = {};
+
+function getUserDetail(username) {
+  // In both cases, cached or not, a promise will be returned
+
+  if (userCache[username]) {
+  	// syncronous code but we still want to return a promise
+    return Promise.resolve(userCache[username]);
+  }
+
+  // Use the fetch API to get the information
+  // fetch returns a promise
+  return fetch('users/' + username + '.json')
+    .then(function(result) {
+      userCache[username] = result;
+      return result;
+    })
+    .catch(function() {
+      throw new Error('Could not find user: ' + username);
+    });
+}
+
+////////////////////////////////////// .all/.race method
+
+const p1 = new Promise((res,rej) => { setTimeOut(()=> { return 1 }, 1000)});
+const p2 = new Promise((res,rej) => { setTimeOut(()=> { return 2 }, 1000)});
+
+const result = Promise.all([p1,p2]).then((res1, res2)=> { doStuff(); }); //complete when both return
+
+const result = Promise.race([p1,p2]).then((res1, res2)=> { doStuff(); }); // complete when first one returns

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  </body>
+
+  <script>
+
+  // only works in safari if not on network
+  var worker = new Worker('ww.js');
+
+  // Setup an event listener that will handle messages received from the worker.
+  worker.addEventListener('message', function(e, a) {
+    // Log the workers message.
+    console.log(e.data);
+  }, false);
+
+  console.log('before');
+  worker.postMessage("hello");
+  console.log('after');
+
+  </script>
+</html>
