@@ -27,3 +27,7 @@ Delete array[position] leaves undefined in position of delete
 .reduce((total, currentValue, currentIndex, arr) => { return total + currentValue } ) // accumulate total
 .find( (x) => { x < 0 })
 Array.from(Obj) // turn array like object to array
+
+// Spread syntax to construct and add elements to array - also doesn't mutate array
+[...arr, “end”]
+[“start”, ...arr]
