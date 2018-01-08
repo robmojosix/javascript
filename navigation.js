@@ -1,3 +1,4 @@
+// composition pattern
 const menuData = [
   {title: "root1", link: 'www.link.com', children:[]},
   {title: "root2", link: 'www.link.com', children:[{title: "root2sub1", link: 'www.link.com', children:[{title: "root2sub1", link: 'www.link.com', children:[]}]}]},
