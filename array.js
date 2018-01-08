@@ -10,6 +10,7 @@ Delete array[position] leaves undefined in position of delete
 .concat() join arrays
 .slice(1) creates new array from index 1 to end of array
 .slice(2,4) new array from index 2 to 3 (up to 4)
+.fill(1)
 .sort() alphabetically
 .sort( (a, b) => { return a - b } ) sort however you want numerically here. Sort function expects a numeric return (negative, 0, positive) if negative first arg is lower, if positive first arg is higher
 .sort( (a, b) => { return 0.5 - Math.random() } ) sort randomly
