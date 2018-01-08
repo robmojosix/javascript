@@ -1,4 +1,19 @@
-() => {
+// normal promise
+const request = require('request');
+
+function request () {
+  return new Promise((resolve, reject) => {
+    request('https://ponyfoo.com/articles/random', (err, res, body) => {
+      if (err) {
+        reject(err); return;
+      }
+      resolve(body);
+    });
+  });
+}
+
+// with promises
+const render = () => {
   getDepartmentsListFromS3({ client }).then((data) => {
    console.log(data)
   });
@@ -13,7 +28,7 @@
 }
 
 // async/await
-async () => {
+const render = async () => {
   const data = await getDepartmentsListFromS3({ client });
 
   const RootComponent = await import(rootComponentPath).default;
@@ -24,7 +39,7 @@ async () => {
 }
 
 // promises
-async () => {
+const render = async () => {
   const deptData = getDepartmentsListFromS3({ client });
 
   const rootComponent = import(rootComponentPath).default;
