@@ -1,10 +1,10 @@
 for(let key in Obj) {
-  if(Obj.hasOwnProperty(key)) {
+  if(Obj.hasOwnProperty(key)) { // ensure it's its own key not inherited from Object constructor
     Obj[key] // value
   }
 }
 
-// ES6
+// ES6 .keys() // returns non-inherited keys only
 Object.keys(Obj).forEach((key) => {
   Obj[key]
 })
